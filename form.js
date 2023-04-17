@@ -1,23 +1,39 @@
-let formulario = document.getElementById("formulario");
+const formulario = document.getElementById("formulario");
 
+formulario.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-formulario.addEventListener("submit", function(event){
-    event.preventDefault();
+  let datos = new FormData(formulario);
 
-    let datos =  new FormData(formulario);
+  loginUser(datos.get("usuario"), datos.get("pass"));
+});
 
-    console.log(datos)
-    console.log(datos.get("usuario"))
-    console.log(datos.get("pass"))
+const loginUser = async (email, pass) => {
+  let formData = new FormData();
 
-    fetch("formulario.php",{
-        method: "POST",
-        body: datos
-    })
+  formData.append("email", email);
+  formData.append("pass", pass);
 
-    .then(res => res.json)
-    .then(data => {
-        console.log(data)
+  try {
+    const res = await fetch("http://localhost/PruebaHLS/formulario.php", {
+      method: "POST",
+      body: formData,
+    });
 
-    })
-})
+    const data = await res.text();
+    // console.log(typeof(data));
+    console.log(data);
+
+    if (data == "success") {
+
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// saludo('MAÑANAS');
+
+// function saludo(parteDelDia){
+//     console.log("BUENAS " + parteDelDia);
+// }
