@@ -29,7 +29,7 @@ if (trim($usuario) === "" && trim($pass) === "") {
     return;
 }
 
-$sql = "INSERT INTO usuario_facu (correo, password)VALUES('$usuario', '$pass') returning correo";
+$sql = "INSERT INTO usuario (email, password)VALUES('$usuario', '$pass') returning email";
 
 $resultado = pg_query($conex, $sql);
 if ($resultado) {

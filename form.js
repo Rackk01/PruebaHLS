@@ -31,7 +31,7 @@ const loginUser = async (email, pass) => {
   formData.append("pass", pass);
 
   try {
-    const res = await fetch("http://localhost/facu-diaz/formulario.php", {
+    const res = await fetch("http://localhost/PruebaHLS/formulario.php", {
       method: "POST",
       body: formData,
     });
