@@ -45,7 +45,7 @@ const loginUser = async (email, pass) => {
         Swal.fire({
           icon: 'success',
           title: 'Bien hecho',
-          text: 'Has ingresado correctamente!',
+          text: data.goodmessage,
           footer: '<a href="">Why do I have this issue?</a>'
         })
 

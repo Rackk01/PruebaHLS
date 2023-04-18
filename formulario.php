@@ -36,7 +36,7 @@ $resultado = pg_query($conex, $query);
 if (!$resultado) {
     echo("Error en la consulta: " . pg_last_error());
     return;
-    
+
 } else {
     $num_rows = pg_num_rows($resultado);
     if ($num_rows > 0) {
@@ -52,7 +52,7 @@ if (!$resultado) {
 
         if ($resultado) {
             // Inicio de sesión exitoso
-            $resultado = array("success" => true, "message" => "Inicio de sesión exitoso. Bienvenido, $usuario.");
+            $resultado = array("success" => true, "goodmessage" => "Inicio de sesión exitoso. Bienvenido, $usuario.");
             echo json_encode($resultado);
         } else {
 
