@@ -9,14 +9,14 @@ formulario.addEventListener("submit", function (event) {
     Swal.fire({
       icon: 'error',
       title: 'Oops... Ha ocurrido un error',
-      text: '!',
+      text: 'Revisa que los datos ingresados sean correctos!',
       footer: '<a href="">Why do I have this issue?</a>'
     })
     return;
   }else{
     Swal.fire(
       'Excelente!',
-      'Te has logueado con exito!',
+      'Buen trabajo!',
       'success'
     )
   }
@@ -36,12 +36,26 @@ const loginUser = async (email, pass) => {
       body: formData,
     });
 
-    const data = await res.text();
+    const data = await res.json();
     // console.log(typeof(data));
     console.log(data);
 
-    if (data == "success") {
+    if (data.success) {
 
+        Swal.fire({
+          icon: 'success',
+          title: 'Bien hecho',
+          text: 'Has ingresado correctamente!',
+          footer: '<a href="">Why do I have this issue?</a>'
+        })
+
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: data.message,
+        text: 'Revisa que los datos ingresados sean correctos!',
+        footer: '<a href="">Why do I have this issue?</a>'
+      })
     }
   } catch (error) {
     console.log(error);

@@ -24,25 +24,43 @@ $pass = $_POST["pass"];
 
 if (trim($usuario) === "" && trim($pass) === "") {
     // Inicio de sesión fallido
-    echo $response = array("success" => false, "message" => "Inicio de sesión fallido. Por favor, verifique su usuario y contraseña.");
+    echo $respuesta = array("success" => false, "message" => "Inicio de sesión fallido. Por favor, verifique su usuario y contraseña.");
     die;
     return;
 }
 
-$sql = "INSERT INTO usuario (email, password)VALUES('$usuario', '$pass') returning email";
+// Revisar si el correo existe en la base de datos
+$query = "SELECT correo FROM usuario WHERE correo = '$usuario'";
+$resultado = pg_query($conex, $query);
 
-$resultado = pg_query($conex, $sql);
-if ($resultado) {
-    // echo json_encode($resultado);
-    // $response = array("success" => false, "message" => "Hubo algún error en la conexión.", "resultado" => '');
-
-    // SELECT
-
-    echo json_encode($response);
-    // $response = array("success"  => true, "message" => "Inicio de sesión exitoso. Bienvenido, $usuario.");
+if (!$resultado) {
+    echo("Error en la consulta: " . pg_last_error());
+    return;
+    
 } else {
-    $response = array("success" => false, "message" => "Hubo algún error en la conexión.");
-    echo json_encode($response);
+    $num_rows = pg_num_rows($resultado);
+    if ($num_rows > 0) {
+        // El correo ya existe en la base de datos
+        $resultado = array("success" => false, "message" => "El correo ya está registrado.");
+        echo json_encode($resultado);
+        return;
+    } else {
+
+        // Insertar el nuevo usuario en la base de datos
+        $sql = "INSERT INTO usuario (correo, password) VALUES ('$usuario', '$pass') returning correo";
+        $resultado = pg_query($conex, $sql);
+
+        if ($resultado) {
+            // Inicio de sesión exitoso
+            $resultado = array("success" => true, "message" => "Inicio de sesión exitoso. Bienvenido, $usuario.");
+            echo json_encode($resultado);
+        } else {
+
+            // Error en la conexión
+            $resultado = array("success" => false, "message" => "Hubo algún error en la conexión.");
+            echo json_encode($resultado);
+        }
+    }
 }
 
 
