@@ -5,6 +5,22 @@ formulario.addEventListener("submit", function (event) {
 
   let datos = new FormData(formulario);
 
+  if(datos.get("usuario").trim() === '' || datos.get("pass").trim() === ''){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops... Ha ocurrido un error',
+      text: '!',
+      footer: '<a href="">Why do I have this issue?</a>'
+    })
+    return;
+  }else{
+    Swal.fire(
+      'Excelente!',
+      'Te has logueado con exito!',
+      'success'
+    )
+  }
+
   loginUser(datos.get("usuario"), datos.get("pass"));
 });
 
@@ -15,7 +31,7 @@ const loginUser = async (email, pass) => {
   formData.append("pass", pass);
 
   try {
-    const res = await fetch("http://localhost/PruebaHLS/formulario.php", {
+    const res = await fetch("http://localhost/facu-diaz/formulario.php", {
       method: "POST",
       body: formData,
     });
@@ -31,6 +47,8 @@ const loginUser = async (email, pass) => {
     console.log(error);
   }
 };
+
+
 
 // saludo('MAÑANAS');
 
